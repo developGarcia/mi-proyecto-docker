@@ -1,11 +1,11 @@
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-  res.send('¡Hola desde Docker en Render!');
+  res.send('¡Hola Mundo!');
 });
 
-app.listen(PORT, () => {
-  console.log(`Servidor ejecutándose en puerto ${PORT}`);
+app.listen(port, () => {
+  console.log(`Servidor corriendo en puerto ${port}`);
 });
