@@ -1,0 +1,133 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "bd5820a5-07b9-41aa-a042-43b2ad53bc8e",
+      "name": "Telegram Trigger",
+      "webhookId": "37d18834-bf7e-4523-b62c-c7b62b46b805",
+      "credentials": {
+        "telegramApi": {
+          "id": "8KpjxpF0Az6G8Z45",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "264c368c-01d6-4244-a668-16414103c500",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        128,
+        224
+      ],
+      "id": "6891d9a7-c9cc-4ab7-ad57-85bb353d99ef",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "lXmzZltkSKcelOAy",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        688,
+        -16
+      ],
+      "id": "e1c19056-0c20-4177-8934-cbbd097c5da7",
+      "name": "Send a text message",
+      "webhookId": "8c3c9730-ac5f-4350-9737-df2497ba72ac",
+      "credentials": {
+        "telegramApi": {
+          "id": "nrW5oBIBIQaLsLkh",
+          "name": "Telegram account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9bcbe7f5-0e8e-4a36-9a64-5edf8c655fad",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7413a1ee05c8e4adc299c4ad6d57259ab1a4c9ec94581cbd944ffd0999300ed5"
+  },
+  "id": "D4wLVauQWxVLOUs7",
+  "tags": []
+}
